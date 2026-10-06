@@ -446,15 +446,25 @@ const CONST = [
  {n:'Câncer', c:'#c77dff', l:[['cn_b','cn_d','cn_g','cn_i'],['cn_d','cn_a']]}
 ];
 
-//Modificada
+//Modificada a animação do céu
 function desenharCeu(){
   const cv = document.getElementById('mapaCeu'), W = cv.clientWidth;
   if(!W) return;
   const dpr = devicePixelRatio || 1, C = W/2, R = C - 20, rad = Math.PI/180;
-  cv.width = cv.height = Math.round(W*dpr);
-  const g = cv.getContext('2d'); g.scale(dpr, dpr);
+
+  //Nova animacção
+  if(cv.width !== Math.round(W*dpr)) cv.width = cv.height = Math.round(W*dpr);
+  const g = cv.getContext('2d');
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.clearRect(0, 0, W, W);
+  g.textBaseline = 'alphabetic';
+
+
   /* tempo sideral local e projeção (zênite no centro, SUL no topo, LESTE à direita) */
-  const jd = new Date(CEU.data).getTime()/864e5 + 2440587.5;
+  // const jd = new Date(CEU.data).getTime()/864e5 + 2440587.5;
+  const jd = tAtual/864e5 + 2440587.5; // tempo para ocorrer a animação
+
+
   const lst = (((280.46061837 + 360.98564736629*(jd - 2451545) + CEU.lon) % 360) + 360) % 360;
   const la = CEU.lat*rad;
   const pos = k => {
@@ -500,9 +510,33 @@ function desenharCeu(){
 new ResizeObserver(desenharCeu).observe(document.getElementById('mapaCeu'));
 document.fonts && document.fonts.ready.then(desenharCeu);
 
+//Novo código pelo claude para animar o loop do céu
+const legenda = document.querySelector('.legenda');
+let rodando = false, t0 = 0;
+
+function quadro(agora){
+  if(!rodando) return;
+  const p = ((agora - t0) / ANIM.dur) % 1;   // progresso de 0 a 1, que reinicia sozinho
+  const q = p < .5 ? p*2 : 2 - p*2;          // "vai e volta" (Câncer → Aquário → Câncer...)
+  // Para recomeçar sempre do início (Câncer → Aquário, corta, Câncer → ...), use: const q = p;
+  tAtual = ANIM.ini + q*(ANIM.fim - ANIM.ini);
+  desenharCeu();
+  legenda.textContent = 'Esperantina, PI · ' + new Date(tAtual).toLocaleString('pt-BR',
+    {day:'2-digit', month:'long', hour:'2-digit', minute:'2-digit', timeZone:'America/Fortaleza'});
+  requestAnimationFrame(quadro);
+}
+
+/* só anima quando o mapa está na tela (economiza bateria) e respeita "reduzir movimento" */
+if(!reduz){
+  new IntersectionObserver(([e]) => {
+    rodando = e.isIntersecting;
+    if(rodando){ t0 = performance.now(); requestAnimationFrame(quadro); }
+  }).observe(document.getElementById('mapaCeu'));
+}
+
 /* ---------- CUPONS (envio por e-mail via FormSubmit) ----------
    ✏️ Troque o e-mail de destino aqui. */
-const EMAIL_DESTINO = 'igor.pflima@gmail.com';
+const EMAIL_DESTINO = 'tickcastop@gmail.com';
 const btnC = document.getElementById('btnCupons'), painel = document.getElementById('painelCupons'),
       stC = document.getElementById('cupomStatus');
 btnC.addEventListener('click', () => {
