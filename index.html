@@ -214,9 +214,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--pastel);outline-off
     </div>
     <!-- ===== MAPA DO CÉU ===== -->
     <section class="bloco">
-      <h2 class="titulo">O céu de 29/06/2026</h2>
+      <h2 class="titulo">O céu de 06/09/2026</h2>
       <div class="vidro ceu">
-        <canvas id="mapaCeu" role="img" aria-label="Mapa do céu de Esperantina, Piauí, em 29 de junho de 2026"></canvas>
+        <canvas id="mapaCeu" role="img" aria-label="Mapa do céu de Esperantina, Piauí, em 06 de Setembro de 2026"></canvas>
         <p class="legenda">Esperantina, PI · 29 de junho de 2026 · 23h</p>
       </div>
     </section>
@@ -412,12 +412,12 @@ addEventListener('keydown', e => { if(e.key === 'Escape') fecharLb(); });
 
 /* ---------- MAPA DO CÉU (calculado pela data, hora e local) ----------
    ✏️ Edite aqui: data/hora (com fuso), latitude (negativa = hemisfério sul) e longitude (negativa = oeste). */
-const CEU = {data:'2026-06-29T23:00:00-03:00', lat:-3.90, lon:-42.23}; // Esperantina (PI)
+const CEU = {data:'2026-09-06T23:00:00-03:00', lat:-3.90, lon:-42.23}; // Esperantina (PI)
 
 /* ✏️ Intervalo da animação: de quando até quando o céu vai "passar", e quantos ms dura cada volta */
 const ANIM = {
-  ini: new Date('2026-06-29T16:30:00-03:00').getTime(),  // Câncer ainda no céu (crepúsculo)
-  fim: new Date('2026-06-30T03:00:00-03:00').getTime(),  // Aquário alto, perto do zênite
+  ini: new Date('2026-09-06T11:30:00-03:00').getTime(),  // Câncer ainda no céu (crepúsculo)
+  fim: new Date('2026-09-06T20:00:00-03:00').getTime(),  // Aquário alto, perto do zênite
   dur: 24000                                              // 24 segundos por volta
 };
 
