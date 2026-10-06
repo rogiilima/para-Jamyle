@@ -579,12 +579,16 @@ function fugir(e){
 }
 nao.addEventListener('pointerdown', fugir);
 nao.addEventListener('click', fugir);
-sim.addEventListener('click', () => {
+sim.addEventListener('click', async () => {
   const q = sim.getBoundingClientRect(), cx = q.left + q.width/2, cy = q.top + q.height/2;
   explodir(cx, cy); setTimeout(() => explodir(cx, cy), 250); som();
   if(navigator.vibrate) navigator.vibrate(40);
   nao.style.display = 'none'; sim.disabled = true;
-  document.getElementById('respostaP').textContent = 'Combinado! 💜';
+  const resp = document.getElementById('respostaP');
+  resp.textContent = 'Combinado! 💜';
+  const r = await enviarEmail('💜 A Jamyle disse SIM!', {Pergunta: 'Depois da Ponte?', Resposta: 'Sim'});
+  if(r.ok){ resp.textContent = 'Combinado! 💜 Já recebi a sua resposta 💌'; }
+  else{ resp.textContent = 'Combinado! 💜 Mas não consegui avisar' + detalhe(r) + '. Toque de novo.'; sim.disabled = false; }
 });
 </script>
 </body>
