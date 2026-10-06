@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12002b">
+<title>1 mês com você 💜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- ===================== CSS ===================== -->
+<style>
+:root{
+  --roxo-escuro:#12002b; --roxo-2:#1a0b2e; --azul:#0f172a; --azul-2:#0d1117;
+  --neon:#ff2a85; --pastel:#ffb6c1; --violeta:#9d4edd;
+  --branco:#ffffff; --rosa-claro:#ffe6f2;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+html,body{max-width:100%;overflow-x:hidden}
+body{
+  font-family:'Poppins',system-ui,sans-serif;color:var(--branco);
+  background:var(--azul-2);min-height:100dvh;
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
+}
+body.travado{overflow:hidden}
+/* Fundo em gradiente fixo (pseudo-elemento: mais fluido no mobile) */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:linear-gradient(160deg,var(--roxo-escuro) 0%,var(--roxo-2) 38%,var(--azul) 72%,var(--azul-2) 100%);
+}
+.titulo{font-family:'Great Vibes',cursive;font-weight:400;color:var(--rosa-claro);
+  text-shadow:0 0 18px rgba(255,42,133,.55)}
+
+/* Corações flutuantes ao fundo */
+#fundo{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.flutua{position:absolute;bottom:-8vh;color:var(--pastel);opacity:0;will-change:transform,opacity;
+  animation:subir linear forwards}
+@keyframes subir{
+  0%{transform:translate3d(0,0,0);opacity:0}
+  15%{opacity:.35}
+  100%{transform:translate3d(var(--dx),-115vh,0) rotate(var(--rot));opacity:0}
+}
+
+/* ---------- SEÇÃO 1: ABERTURA ---------- */
+#abertura{
+  position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2rem;text-align:center;
+  transition:opacity .9s ease,transform .9s ease;will-change:transform,opacity;
+}
+#abertura.saindo{opacity:0;transform:translate3d(0,-8vh,0);pointer-events:none}
+.coracoes{position:relative;width:min(78vw,22rem);aspect-ratio:1/1;border:0;background:none;
+  cursor:pointer;color:inherit;font:inherit;outline-offset:8px}
+.coracoes svg{position:absolute;will-change:transform;overflow:visible}
+.c-grande{width:82%;left:0;bottom:4%;
+  filter:drop-shadow(0 0 14px var(--neon)) drop-shadow(0 0 40px rgba(255,42,133,.6));
+  animation:pulso 1.4s ease-in-out infinite}
+.c-pequeno{width:46%;right:0;top:2%;
+  filter:drop-shadow(0 0 12px var(--violeta)) drop-shadow(0 0 30px rgba(157,78,221,.65));
+  animation:pulso 1.4s ease-in-out .35s infinite}
+@keyframes pulso{0%,100%{transform:scale(1)}18%{transform:scale(1.09)}34%{transform:scale(1)}50%{transform:scale(1.06)}}
+.coracoes .rotulo{position:absolute;left:2%;bottom:30%;width:72%;
+  font-family:'Great Vibes',cursive;font-size:clamp(2.4rem,11vw,3.4rem);line-height:1.05;
+  text-shadow:0 2px 12px rgba(18,0,43,.6);animation:pulso 1.4s ease-in-out infinite;will-change:transform}
+.dica{font-size:.85rem;font-weight:300;letter-spacing:.04em;color:var(--pastel);animation:piscar 2s ease-in-out infinite}
+@keyframes piscar{50%{opacity:.35}}
+
+/* Explosão de corações */
+.explode{position:fixed;z-index:30;pointer-events:none;will-change:transform,opacity;
+  animation:explodir 1.3s cubic-bezier(.15,.8,.3,1) forwards}
+@keyframes explodir{
+  0%{transform:translate3d(-50%,-50%,0) scale(.3);opacity:1}
+  100%{transform:translate3d(calc(-50% + var(--x)),calc(-50% + var(--y)),0) scale(1.1) rotate(var(--r));opacity:0}
+}
+
+/* ---------- CONTEÚDO PRINCIPAL ---------- */
+#principal{display:none;opacity:0;transition:opacity 1s ease;
+  padding:calc(env(safe-area-inset-top) + 1.5rem) 1.1rem calc(env(safe-area-inset-bottom) + 3rem)}
+#principal.visivel{opacity:1}
+.vidro{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,182,193,.28);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border-radius:1.5rem;
+  box-shadow:0 0 28px rgba(255,42,133,.18),inset 0 1px 0 rgba(255,255,255,.12),
+    8px 8px 22px rgba(0,0,0,.35),-4px -4px 14px rgba(157,78,221,.08); /* toque neumórfico */
+}
+
+/* ---------- SEÇÃO 2: CARTA ---------- */
+#carta{max-width:34rem;margin:0 auto;padding:1.8rem 1.4rem 2rem;min-height:70dvh}
+#carta h1{font-size:clamp(2.6rem,12vw,3.4rem);text-align:center;margin-bottom:1.2rem;line-height:1.1}
+#texto{white-space:pre-wrap;font-size:1rem;line-height:1.85;font-weight:300;color:var(--rosa-claro)}
+.cursor{display:inline-block;width:2px;height:1.1em;margin-left:2px;vertical-align:text-bottom;
+  background:var(--neon);box-shadow:0 0 8px var(--neon);animation:cursor 1s steps(1) infinite}
+@keyframes cursor{50%{opacity:0}}
+.rolar{display:block;text-align:center;margin:2.2rem auto 0;color:var(--pastel);font-size:.85rem;
+  opacity:0;transition:opacity 1s;pointer-events:none}
+.rolar.on{opacity:1;animation:piscar 2s ease-in-out infinite}
+
+/* ---------- SEÇÃO 3: GALERIA ---------- */
+#galeria{max-width:34rem;margin:3.5rem auto 0}
+#galeria h2{font-size:clamp(2.3rem,10vw,3rem);text-align:center;margin-bottom:1.6rem}
+.grade{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem .9rem}
+.polaroid{background:rgba(255,255,255,.92);padding:.5rem .5rem .4rem;border-radius:.5rem;color:#3a1250;
+  box-shadow:0 10px 24px rgba(0,0,0,.45),0 0 18px rgba(255,42,133,.22);
+  transform:rotate(var(--giro,-2deg));will-change:transform}
+.polaroid:nth-child(even){--giro:2.2deg}
+.polaroid:nth-child(3n){--giro:-1deg}
+.moldura{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:.25rem;
+  background:linear-gradient(135deg,var(--violeta),var(--neon))}
+.moldura img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
+.moldura.vazio::after{content:"♥";position:absolute;inset:0;display:grid;place-items:center;font-size:2.4rem;color:#fff}
+.moldura.vazio img{display:none}
+.polaroid figcaption{font-family:'Great Vibes',cursive;font-size:1.25rem;text-align:center;padding-top:.3rem}
+.fim{text-align:center;margin-top:2.5rem;font-size:1.9rem}
+
+/* ---------- Novos blocos ---------- */
+.bloco{margin-top:2.8rem}
+.bloco>.titulo{font-size:clamp(2.1rem,9.5vw,2.8rem);text-align:center;margin-bottom:1.2rem}
+button:focus-visible,a:focus-visible{outline:2px solid var(--pastel);outline-offset:3px}
+.ceu{padding:.6rem}
+#mapaCeu{display:block;width:100%;height:auto;aspect-ratio:1/1}
+.legenda{text-align:center;font-size:.8rem;font-weight:300;color:var(--pastel);padding:.2rem 0 .5rem}
+.botao{display:block;width:100%;padding:.95rem 1.2rem;border:0;border-radius:2rem;cursor:pointer;text-align:center;text-decoration:none;
+  font:500 1rem 'Poppins',sans-serif;color:#fff;background:linear-gradient(135deg,var(--neon),var(--violeta));
+  box-shadow:0 0 20px rgba(255,42,133,.5);transition:transform .2s}
+.botao:active{transform:scale(.97)}
+.painel{margin-top:1rem;padding:1.2rem;display:grid;gap:.7rem}
+.painel[hidden]{display:none}
+.painel p{text-align:center;font-weight:300}
+.cupom{padding:.9rem 1rem;text-align:left;border:1px solid rgba(255,182,193,.35);border-radius:1rem;
+  background:rgba(255,255,255,.08);color:var(--rosa-claro);font:400 .95rem 'Poppins',sans-serif;cursor:pointer}
+.cupom:disabled{opacity:.5}
+.cupom.usado{border-color:var(--neon);box-shadow:0 0 14px rgba(255,42,133,.5);opacity:1}
+.status{text-align:center;font-size:.9rem;color:var(--rosa-claro);min-height:1.3em}
+.musica{display:flex;align-items:center;gap:1rem;padding:1rem}
+.musica .botao{width:auto;flex:none;padding:.7rem 1.3rem}
+.musica>div:nth-child(2){flex:1;min-width:0}
+.disco{flex:none;width:3.4rem;height:3.4rem;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;
+  background:radial-gradient(circle,#1a0b2e 22%,var(--violeta) 24%,var(--neon) 100%);
+  box-shadow:0 0 16px rgba(157,78,221,.6);animation:giro 7s linear infinite;will-change:transform}
+@keyframes giro{to{transform:rotate(360deg)}}
+.mus-titulo{font-weight:500;line-height:1.3}
+.mus-artista{font-size:.85rem;font-weight:300;color:var(--pastel)}
+.pergunta{padding:1.6rem 1.2rem 1.2rem;text-align:center}
+.pergunta .titulo{font-size:clamp(2.3rem,10.5vw,3.1rem)}
+.opcoes{position:relative;height:8rem;margin-top:.8rem}
+.opcoes .botao{position:absolute;top:1rem;width:44%}
+#btnSim{left:3%}
+#btnNao{left:53%;transition:left .25s ease,top .25s ease;background:rgba(255,255,255,.12);box-shadow:none;border:1px solid var(--pastel)}
+
+/* Lightbox */
+#lightbox{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
+  background:rgba(13,17,23,.94);padding:1rem;opacity:0;transition:opacity .3s}
+#lightbox.on{display:flex}
+#lightbox.show{opacity:1}
+#lightbox img{max-width:100%;max-height:88dvh;border-radius:.8rem;box-shadow:0 0 40px rgba(255,42,133,.45)}
+#fechar{position:absolute;top:calc(env(safe-area-inset-top) + .8rem);right:1rem;width:2.8rem;height:2.8rem;
+  border-radius:50%;border:1px solid var(--pastel);background:rgba(255,255,255,.1);color:#fff;font-size:1.4rem;cursor:pointer}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body class="travado">
+
+<div id="fundo" aria-hidden="true"></div>
+
+<!-- ===================== HTML ===================== -->
+
+<!-- SEÇÃO 1: ABERTURA -->
+<section id="abertura">
+  <button class="coracoes" id="btnAbrir" aria-label="Toque para abrir a surpresa">
+    <svg class="c-pequeno" viewBox="0 0 32 29"><defs><linearGradient id="gv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c77dff"/><stop offset="1" stop-color="#9d4edd"/></linearGradient></defs>
+      <path fill="url(#gv)" d="M23.6 0c-3.4 0-6.3 2.7-7.6 5.6C14.7 2.7 11.8 0 8.4 0 3.8 0 0 3.8 0 8.4c0 9.4 9.5 11.2 16 21.2 6.1-9.9 16-11.8 16-21.2C32 3.8 28.2 0 23.6 0z"/></svg>
+    <svg class="c-grande" viewBox="0 0 32 29"><defs><linearGradient id="gn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5fa2"/><stop offset="1" stop-color="#ff2a85"/></linearGradient></defs>
+      <path fill="url(#gn)" d="M23.6 0c-3.4 0-6.3 2.7-7.6 5.6C14.7 2.7 11.8 0 8.4 0 3.8 0 0 3.8 0 8.4c0 9.4 9.5 11.2 16 21.2 6.1-9.9 16-11.8 16-21.2C32 3.8 28.2 0 23.6 0z"/></svg>
+    <span class="rotulo">Para Jamyle</span>
+  </button>
+  <p class="dica">toque no coração</p>
+</section>
+
+<!-- CONTEÚDO (aparece após o toque) -->
+<main id="principal">
+
+  <!-- SEÇÃO 2: CARTA -->
+  <section id="carta" class="vidro">
+    <h1 class="titulo">Meu amor,</h1>
+    <p id="texto"></p><span class="cursor" id="cursor"></span>
+    <span class="rolar" id="rolar">deslize para ver nossas memórias ↓</span>
+  </section>
+
+  <!-- SEÇÃO 3: GALERIA -->
+  <section id="galeria">
+    <h2 class="titulo">Nossas memórias</h2>
+    <div class="grade">
+
+      <!-- SUBSTITUA AQUI PELA SUA FOTO 1 (coloque o arquivo em fotos/foto1.jpg).
+           data-fb = imagem demonstrativa que aparece enquanto você não colocar a sua. -->
+      <figure class="polaroid"><div class="moldura"><img src="fotos/foto1.jpg" data-fb="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800&q=70&auto=format&fit=crop" alt="Foto 1 do casal" loading="lazy"></div><figcaption>Nosso começo</figcaption></figure>
+
+      <!-- SUBSTITUA AQUI PELA SUA FOTO 2 -->
+      <figure class="polaroid"><div class="moldura"><img src="fotos/foto2.jpg" data-fb="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&q=70&auto=format&fit=crop" alt="Foto 2 do casal" loading="lazy"></div><figcaption>Primeiro date</figcaption></figure>
+
+      <!-- SUBSTITUA AQUI PELA SUA FOTO 3 -->
+      <figure class="polaroid"><div class="moldura"><img src="fotos/foto3.jpg" data-fb="https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac?w=800&q=70&auto=format&fit=crop" alt="Foto 3 do casal" loading="lazy"></div><figcaption>Risadas</figcaption></figure>
+
+      <!-- SUBSTITUA AQUI PELA SUA FOTO 4 -->
+      <figure class="polaroid"><div class="moldura"><img src="fotos/foto4.jpg" data-fb="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=800&q=70&auto=format&fit=crop" alt="Foto 4 do casal" loading="lazy"></div><figcaption>Do seu lado</figcaption></figure>
+
+
+    </div>
+    <!-- ===== MAPA DO CÉU ===== -->
+    <section class="bloco">
+      <h2 class="titulo">O céu de 29/06/2026</h2>
+      <div class="vidro ceu">
+        <canvas id="mapaCeu" role="img" aria-label="Mapa do céu de Esperantina, Piauí, em 29 de junho de 2026"></canvas>
+        <p class="legenda">Esperantina, PI · 29 de junho de 2026 · 23h</p>
+      </div>
+    </section>
+
+    <!-- ===== CUPONS DE PRESENTE =====
+         ✏️ Para trocar/adicionar cupons, edite os botões abaixo (texto e data-v). -->
+    <section class="bloco">
+      <button class="botao" id="btnCupons" aria-expanded="false">🎁 Cupons de presente</button>
+      <div class="vidro painel" id="painelCupons" hidden>
+        <p>Escolha o seu presente:</p>
+        <button class="cupom" data-v="Vale um filme escolhido por você">🎬 Vale um filme escolhido por você</button>
+        <button class="cupom" data-v="Vale um abraço de 10 minutos">🤗 Vale um abraço de 10 minutos</button>
+        <button class="cupom" data-v="Vale 10 mil beijos">💋 Vale 10 mil beijos</button>
+        <p class="status" id="cupomStatus" role="status"></p>
+      </div>
+    </section>
+
+    <!-- ===== MÚSICA ===== -->
+    <section class="bloco">
+      <div class="vidro musica">
+        <div class="disco" aria-hidden="true">♪</div>
+        <div>
+          <p class="mus-titulo">Me Chamando de Paixão</p>
+          <p class="mus-artista">Jorge Ben Jor</p>
+        </div>
+        <!-- ✏️ Troque o link abaixo pelo link direto da música (Spotify/YouTube), se quiser -->
+        <a class="botao" href="https://www.youtube.com/results?search_query=Jorge+Ben+Jor+Me+Chamando+de+Paix%C3%A3o" target="_blank" rel="noopener">Ouvir</a>
+      </div>
+    </section>
+
+    <!-- ===== PERGUNTA ===== -->
+    <section class="bloco">
+      <div class="vidro pergunta">
+        <h3 class="titulo">Depois da Ponte?</h3>
+        <div class="opcoes" id="opcoes">
+          <button class="botao" id="btnSim">Sim</button>
+          <button class="botao" id="btnNao">Não</button>
+        </div>
+        <p class="status" id="respostaP" role="status"></p>
+      </div>
+    </section>
+
+    <p class="fim titulo">Te amo ♥</p>
+  </section>
+</main>
+
+<!-- Lightbox: foto ampliada em tela cheia -->
+<div id="lightbox" role="dialog" aria-label="Foto ampliada">
+  <button id="fechar" aria-label="Fechar">×</button>
+  <img alt="">
+</div>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+/* =====================================================
+   ✏️ EDITE A CARTA AQUI
+   Use \n para pular linha (\n\n = parágrafo novo).
+   ===================== */
+const CARTA =
+"Hoje faz um mês que você entrou na minha vida e, de lá pra cá, tudo ficou mais leve, mais bonito e mais cheio de sentido.\n\n" +
+"Eu já sabia que você era especial, mas conviver com você me mostrou o quanto. O seu sorriso melhora o meu dia, a sua voz me acalma e o seu jeito de ser me faz querer ser alguém melhor.\n\n" +
+"Um mês pode parecer pouco, mas pra mim cada dia ao seu lado vale por muitos. Obrigado(a) pela paciência, pelo carinho e por cada risada que a gente já dividiu.\n\n" +
+"Que venham muitos e muitos meses, cheios de abraços, planos e histórias novas. Eu escolho você hoje e todos os dias.\n\n" +
+"Feliz 1 mês, Jamyle. Te amo. 💜\n\n" +
+"— [SEU NOME]";
+
+/* ---------- Corações flutuantes no fundo ---------- */
+const fundo = document.getElementById('fundo');
+const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function coracaoFundo(){
+  if(document.hidden || reduz) return;
+  const s = document.createElement('span');
+  s.className = 'flutua';
+  s.textContent = Math.random() > .5 ? '♥' : '❤';
+  s.style.left = Math.random()*100 + 'vw';
+  s.style.fontSize = (0.8 + Math.random()*1.4) + 'rem';
+  s.style.setProperty('--dx', (Math.random()*60 - 30) + 'vw');
+  s.style.setProperty('--rot', (Math.random()*80 - 40) + 'deg');
+  s.style.animationDuration = (9 + Math.random()*8) + 's';
+  s.addEventListener('animationend', () => s.remove());
+  fundo.appendChild(s);
+}
+setInterval(coracaoFundo, 1100);
+
+/* ---------- Som curto (gerado pelo navegador, sem arquivo) ---------- */
+function som(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [659, 784, 988].forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime + i*.12;
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(.18, t + .02);
+      g.gain.exponentialRampToValueAtTime(.001, t + .6);
+      o.connect(g).connect(ctx.destination); o.start(t); o.stop(t + .65);
+    });
+  }catch(e){}
+}
+
+/* ---------- Explosão de corações ---------- */
+function explodir(cx, cy){
+  const cores = ['#ff2a85','#ffb6c1','#9d4edd','#ffe6f2'];
+  for(let i = 0; i < 28; i++){
+    const h = document.createElement('span');
+    const ang = Math.random()*Math.PI*2, d = 90 + Math.random()*170;
+    h.className = 'explode';
+    h.textContent = '♥';
+    h.style.left = cx + 'px'; h.style.top = cy + 'px';
+    h.style.color = cores[i % cores.length];
+    h.style.fontSize = (1 + Math.random()*1.6) + 'rem';
+    h.style.setProperty('--x', Math.cos(ang)*d + 'px');
+    h.style.setProperty('--y', Math.sin(ang)*d + 'px');
+    h.style.setProperty('--r', (Math.random()*120 - 60) + 'deg');
+    h.addEventListener('animationend', () => h.remove());
+    document.body.appendChild(h);
+  }
+}
+
+/* ---------- Abertura -> Carta ---------- */
+const abertura = document.getElementById('abertura');
+const principal = document.getElementById('principal');
+let aberto = false;
+document.getElementById('btnAbrir').addEventListener('click', e => {
+  if(aberto) return; aberto = true;
+  const r = e.currentTarget.getBoundingClientRect();
+  explodir(r.left + r.width/2, r.top + r.height/2);
+  som();
+  if(navigator.vibrate) navigator.vibrate(40);
+  setTimeout(() => abertura.classList.add('saindo'), 350);
+  setTimeout(() => {
+    abertura.style.display = 'none';
+    document.body.classList.remove('travado');
+    principal.style.display = 'block';
+    requestAnimationFrame(() => principal.classList.add('visivel'));
+    setTimeout(digitar, 700);
+  }, 1200);
+});
+
+/* ---------- Máquina de escrever ---------- */
+const alvo = document.getElementById('texto');
+const cursor = document.getElementById('cursor');
+const rolar = document.getElementById('rolar');
+let usuarioRolando = false;
+addEventListener('touchstart', () => usuarioRolando = true, {passive:true});
+addEventListener('touchend',   () => setTimeout(() => usuarioRolando = false, 1500), {passive:true});
+
+function digitar(){
+  let i = 0;
+  const no = document.createTextNode('');
+  alvo.appendChild(no);
+  (function passo(){
+    if(i >= CARTA.length){ rolar.classList.add('on'); return; }
+    const c = CARTA[i++];
+    no.nodeValue += c;
+    /* mantém o cursor visível se a carta for longa */
+    const b = cursor.getBoundingClientRect();
+    if(!usuarioRolando && b.bottom > innerHeight - 90){
+      scrollBy({top: b.bottom - innerHeight + 140, behavior: 'smooth'});
+    }
+    /* velocidade natural: pausas em pontuação */
+    let atraso = 38 + Math.random()*40;
+    if(',;'.includes(c)) atraso = 260;
+    else if('.!?'.includes(c)) atraso = 520;
+    else if(c === '\n') atraso = 380;
+    setTimeout(passo, atraso);
+  })();
+}
+
+/* ---------- Galeria: fallback de imagens + lightbox ---------- */
+document.querySelectorAll('.moldura img').forEach(img => {
+  const falhou = () => {
+    if(img.dataset.fb && !img.dataset.tentou){ img.dataset.tentou = 1; img.src = img.dataset.fb; }
+    else img.parentNode.classList.add('vazio');
+  };
+  img.addEventListener('error', falhou);
+  if(img.complete && img.naturalWidth === 0 && img.src) falhou();
+});
+
+const lb = document.getElementById('lightbox'), lbImg = lb.querySelector('img');
+document.querySelector('.grade').addEventListener('click', e => {
+  const img = e.target.closest('.moldura img');
+  if(!img) return;
+  lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt;
+  lb.classList.add('on'); requestAnimationFrame(() => lb.classList.add('show'));
+  document.body.classList.add('travado');
+});
+function fecharLb(){
+  lb.classList.remove('show'); document.body.classList.remove('travado');
+  setTimeout(() => lb.classList.remove('on'), 300);
+}
+lb.addEventListener('click', fecharLb);
+addEventListener('keydown', e => { if(e.key === 'Escape') fecharLb(); });
+
+/* ---------- MAPA DO CÉU (calculado pela data, hora e local) ----------
+   ✏️ Edite aqui: data/hora (com fuso), latitude (negativa = hemisfério sul) e longitude (negativa = oeste). */
+const CEU = {data:'2026-06-29T23:00:00-03:00', lat:-3.90, lon:-42.23}; // Esperantina (PI)
+
+/* ✏️ Intervalo da animação: de quando até quando o céu vai "passar", e quantos ms dura cada volta */
+const ANIM = {
+  ini: new Date('2026-06-29T18:30:00-03:00').getTime(),  // Câncer ainda no céu (crepúsculo)
+  fim: new Date('2026-06-30T03:00:00-03:00').getTime(),  // Aquário alto, perto do zênite
+  dur: 24000                                              // 24 segundos por volta
+};
+
+let tAtual = new Date(CEU.data).getTime();  // instante que está sendo desenhado
+
+
+/* Estrelas -> chave:[ascensão reta (h), declinação (°), magnitude, nome opcional] */
+const S = {
+ acrux:[12.443,-63.10,.8], mimosa:[12.795,-59.69,1.25], gacrux:[12.519,-57.11,1.6], delcru:[12.252,-58.75,2.8],
+ acen:[14.660,-60.83,-.3,'Alfa Centauri'], hadar:[14.064,-60.37,.6], gcen:[12.692,-48.96,2.2], ecen:[13.665,-53.47,2.3],
+ zcen:[13.925,-47.29,2.5], thcen:[14.112,-36.37,2.1], alup:[14.699,-47.39,2.3], blup:[14.976,-43.13,2.7],
+ antares:[16.490,-26.43,1,'Antares'], graffias:[16.090,-19.80,2.6], dschubba:[16.005,-22.62,2.3], sigsco:[16.353,-25.59,2.9],
+ tausco:[16.598,-28.22,2.8], epsco:[16.836,-34.29,2.3], musco:[16.865,-38.05,3], zesco:[16.910,-42.36,3.6],
+ etasco:[17.200,-43.24,3.3], sargas:[17.622,-43.0,1.9], iosco:[17.790,-40.13,3], kasco:[17.708,-39.03,2.4], shaula:[17.560,-37.10,1.6],
+ gsgr:[18.097,-30.42,3], dsgr:[18.350,-29.83,2.7], esgr:[18.403,-34.38,1.8], lsgr:[18.466,-25.42,2.8], phsgr:[18.762,-26.99,3.2],
+ nunki:[18.921,-26.30,2], tsgr:[19.115,-27.67,3.3], zsgr:[19.044,-29.88,2.6],
+ spica:[13.420,-11.16,1,'Espiga'], arcturus:[14.261,19.18,-.05,'Arcturus'], vega:[18.615,38.78,0,'Vega'], altair:[19.847,8.87,.8,'Altair'],
+ deneb:[20.690,45.28,1.25], regulus:[10.139,11.97,1.4], rasal:[17.582,12.56,2.1], atria:[16.812,-69.03,1.9],
+ peacock:[20.427,-56.74,1.9], alnair:[22.137,-46.96,1.7], alib:[14.848,-16.04,2.75], blib:[15.283,-9.38,2.6],
+ aq_e:[20.795,-9.50,3.8], aq_b:[21.526,-5.57,2.9], aq_a:[22.097,-0.32,3.0], aq_g:[22.362,-1.39,3.8], aq_z:[22.480,-0.02,4.3],
+ aq_h:[22.594,-0.12,4.0], aq_p:[22.422,1.38,4.7], aq_t:[22.280,-7.78,4.2], aq_l:[22.877,-7.58,3.7], aq_u:[22.827,-13.59,4.0], aq_d:[22.911,-15.82,3.3],
+ cn_b:[8.275,9.19,3.5], cn_d:[8.745,18.15,3.9], cn_g:[8.722,21.47,4.7], cn_i:[8.779,28.76,4.0], cn_a:[8.975,11.86,4.25]
+};
+const CONST = [
+ {n:'Aquário', c:'#ff2a85', l:[['aq_e','aq_b','aq_a','aq_g','aq_z'],['aq_p','aq_z','aq_h']]},
+ {n:'Câncer', c:'#c77dff', l:[['cn_b','cn_d','cn_g','cn_i'],['cn_d','cn_a']]}
+];
+
+//Modificada
+function desenharCeu(){
+  const cv = document.getElementById('mapaCeu'), W = cv.clientWidth;
+  if(!W) return;
+  const dpr = devicePixelRatio || 1, C = W/2, R = C - 20, rad = Math.PI/180;
+  cv.width = cv.height = Math.round(W*dpr);
+  const g = cv.getContext('2d'); g.scale(dpr, dpr);
+  /* tempo sideral local e projeção (zênite no centro, SUL no topo, LESTE à direita) */
+  const jd = new Date(CEU.data).getTime()/864e5 + 2440587.5;
+  const lst = (((280.46061837 + 360.98564736629*(jd - 2451545) + CEU.lon) % 360) + 360) % 360;
+  const la = CEU.lat*rad;
+  const pos = k => {
+    const H = (lst - S[k][0]*15)*rad, de = S[k][1]*rad;
+    const alt = Math.asin(Math.sin(de)*Math.sin(la) + Math.cos(de)*Math.cos(la)*Math.cos(H));
+    const az = Math.atan2(-Math.cos(de)*Math.sin(H), Math.sin(de)*Math.cos(la) - Math.cos(de)*Math.sin(la)*Math.cos(H));
+    const r = (Math.PI/2 - alt)/(Math.PI/2)*R;
+    return {x:C + r*Math.sin(az), y:C + r*Math.cos(az), alt:alt/rad};
+  };
+  g.save(); g.beginPath(); g.arc(C, C, R, 0, 7); g.clip();
+  const bg = g.createRadialGradient(C, C, 0, C, C, R);
+  bg.addColorStop(0, '#1a0b2e'); bg.addColorStop(1, '#0d1117');
+  g.fillStyle = bg; g.fillRect(0, 0, W, W);
+  g.strokeStyle = 'rgba(255,255,255,.1)'; g.setLineDash([3, 5]);
+  [R/3, 2*R/3].forEach(r => { g.beginPath(); g.arc(C, C, r, 0, 7); g.stroke(); });
+  g.setLineDash([]);
+  CONST.forEach(k => {
+    g.strokeStyle = k.c; g.globalAlpha = .6; g.lineWidth = 1.2;
+    k.l.forEach(p => { g.beginPath(); p.forEach((id, i) => { const q = pos(id); i ? g.lineTo(q.x, q.y) : g.moveTo(q.x, q.y); }); g.stroke(); });
+  });
+  g.globalAlpha = 1;
+  for(const k in S){
+    const q = pos(k); if(q.alt < 0) continue;
+    const rs = Math.max(1, (4.2 - S[k][2])*.55);
+    g.shadowColor = k === 'antares' ? '#ff6a4d' : '#ffb6c1'; g.shadowBlur = rs*3;
+    g.fillStyle = k === 'antares' ? '#ff9c80' : '#fff';
+    g.beginPath(); g.arc(q.x, q.y, rs, 0, 7); g.fill();
+  }
+  g.shadowBlur = 0; g.textAlign = 'center';
+  g.font = "11px 'Poppins',sans-serif"; g.fillStyle = 'rgba(255,230,242,.8)';
+  for(const k in S){ const q = pos(k); if(S[k][3] && q.alt > 3) g.fillText(S[k][3], q.x + 4, q.y - 8); }
+  g.font = "19px 'Great Vibes',cursive";
+  CONST.forEach(k => {
+    const ids = k.l.flat(), p = ids.map(pos);
+    const x = p.reduce((a, b) => a + b.x, 0)/p.length, y = p.reduce((a, b) => a + b.y, 0)/p.length;
+    if(p.some(b => b.alt > 8)){ g.fillStyle = k.c; g.fillText(k.n, x, y + 28); }
+  });
+  g.restore();
+  g.strokeStyle = 'rgba(255,182,193,.55)'; g.lineWidth = 1.5; g.beginPath(); g.arc(C, C, R, 0, 7); g.stroke();
+  g.font = "600 13px 'Poppins',sans-serif"; g.fillStyle = '#ffb6c1'; g.textBaseline = 'middle';
+  g.fillText('S', C, 10); g.fillText('N', C, W - 10); g.fillText('L', W - 10, C); g.fillText('O', 10, C);
+}
+new ResizeObserver(desenharCeu).observe(document.getElementById('mapaCeu'));
+document.fonts && document.fonts.ready.then(desenharCeu);
+
+/* ---------- CUPONS (envio por e-mail via FormSubmit) ----------
+   ✏️ Troque o e-mail de destino aqui. */
+const EMAIL_DESTINO = 'igor.pflima@gmail.com';
+const btnC = document.getElementById('btnCupons'), painel = document.getElementById('painelCupons'),
+      stC = document.getElementById('cupomStatus');
+btnC.addEventListener('click', () => {
+  painel.hidden = !painel.hidden;
+  btnC.setAttribute('aria-expanded', String(!painel.hidden));
+});
+painel.addEventListener('click', async e => {
+  const b = e.target.closest('.cupom'); if(!b || b.disabled) return;
+  const vale = b.dataset.v, todos = painel.querySelectorAll('.cupom');
+  todos.forEach(x => x.disabled = true);
+  stC.textContent = 'Enviando o seu cupom…';
+  try{
+    const r = await fetch('https://formsubmit.co/ajax/' + EMAIL_DESTINO, {
+      method:'POST',
+      headers:{'Content-Type':'application/json', 'Accept':'application/json'},
+      body: JSON.stringify({_subject:'💜 A Jamyle resgatou um cupom!', _template:'table', _captcha:'false',
+                            Cupom: vale, Mensagem:'A Jamyle escolheu: ' + vale})
+    });
+    const j = await r.json();
+    if(!r.ok || j.success === false || j.success === 'false') throw new Error('falhou');
+    b.classList.add('usado');
+    stC.textContent = 'Cupom resgatado! Já recebi o aviso 💌';
+    const q = b.getBoundingClientRect(); explodir(q.left + q.width/2, q.top + q.height/2); som();
+  }catch(err){
+    stC.textContent = 'Não deu para enviar agora. Toque de novo 💜';
+  }
+  todos.forEach(x => { if(!x.classList.contains('usado')) x.disabled = false; });
+});
+
+/* ---------- PERGUNTA: "Depois da Ponte?" ---------- */
+const op = document.getElementById('opcoes'), sim = document.getElementById('btnSim'), nao = document.getElementById('btnNao');
+function fugir(e){
+  e.preventDefault();
+  const mx = op.clientWidth - nao.offsetWidth, my = op.clientHeight - nao.offsetHeight;
+  let x, y, t = 0;
+  do{ x = Math.random()*mx; y = Math.random()*my; t++; }
+  while(t < 15 && x < sim.offsetLeft + sim.offsetWidth + 8 && x + nao.offsetWidth > sim.offsetLeft - 8
+        && y < sim.offsetTop + sim.offsetHeight + 8 && y + nao.offsetHeight > sim.offsetTop - 8);
+  nao.style.left = x + 'px'; nao.style.top = y + 'px';
+}
+nao.addEventListener('pointerdown', fugir);
+nao.addEventListener('click', fugir);
+sim.addEventListener('click', () => {
+  const q = sim.getBoundingClientRect(), cx = q.left + q.width/2, cy = q.top + q.height/2;
+  explodir(cx, cy); setTimeout(() => explodir(cx, cy), 250); som();
+  if(navigator.vibrate) navigator.vibrate(40);
+  nao.style.display = 'none'; sim.disabled = true;
+  document.getElementById('respostaP').textContent = 'Combinado! 💜';
+});
+</script>
+</body>
+</html>
