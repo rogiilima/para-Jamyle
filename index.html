@@ -537,31 +537,41 @@ if(!reduz){
 /* ---------- CUPONS (envio por e-mail via FormSubmit) ----------
    ✏️ Troque o e-mail de destino aqui. */
 const EMAIL_DESTINO = 'tickcastop@gmail.com';
+const MOSTRAR_ERRO = true; // ✏️ mostra o motivo do erro na tela; coloque false quando estiver tudo funcionando
 const btnC = document.getElementById('btnCupons'), painel = document.getElementById('painelCupons'),
       stC = document.getElementById('cupomStatus');
 btnC.addEventListener('click', () => {
   painel.hidden = !painel.hidden;
   btnC.setAttribute('aria-expanded', String(!painel.hidden));
 });
+/* Envia um e-mail via FormSubmit. Retorna {ok, msg}. */
+async function enviarEmail(assunto, campos){
+  try{
+    const r = await fetch('https://formsubmit.co/ajax/' + EMAIL_DESTINO, {
+      method:'POST',
+      headers:{'Content-Type':'application/json', 'Accept':'application/json'},
+      body: JSON.stringify(Object.assign({_subject: assunto, _template:'table', _captcha:'false'}, campos))
+    });
+    let j = {}; try{ j = await r.json(); }catch(_){}
+    const ok = r.ok && j.success !== false && j.success !== 'false';
+    return {ok, msg: ok ? '' : (j.message || 'erro ' + r.status)};
+  }catch(err){
+    return {ok:false, msg:'sem conexão com o FormSubmit: abra pelo site hospedado (não pelo arquivo) e desative bloqueadores'};
+  }
+}
+const detalhe = r => MOSTRAR_ERRO ? ' (' + r.msg + ')' : '';
 painel.addEventListener('click', async e => {
   const b = e.target.closest('.cupom'); if(!b || b.disabled) return;
   const vale = b.dataset.v, todos = painel.querySelectorAll('.cupom');
   todos.forEach(x => x.disabled = true);
   stC.textContent = 'Enviando o seu cupom…';
-  try{
-    const r = await fetch('https://formsubmit.co/ajax/' + EMAIL_DESTINO, {
-      method:'POST',
-      headers:{'Content-Type':'application/json', 'Accept':'application/json'},
-      body: JSON.stringify({_subject:'💜 A Jamyle resgatou um cupom!', _template:'table', _captcha:'false',
-                            Cupom: vale, Mensagem:'A Jamyle escolheu: ' + vale})
-    });
-    const j = await r.json();
-    if(!r.ok || j.success === false || j.success === 'false') throw new Error('falhou');
+  const r = await enviarEmail('💜 A Jamyle resgatou um cupom!', {Cupom: vale, Mensagem: 'A Jamyle escolheu: ' + vale});
+  if(r.ok){
     b.classList.add('usado');
     stC.textContent = 'Cupom resgatado! Já recebi o aviso 💌';
     const q = b.getBoundingClientRect(); explodir(q.left + q.width/2, q.top + q.height/2); som();
-  }catch(err){
-    stC.textContent = 'Não deu para enviar agora. Toque de novo 💜';
+  }else{
+    stC.textContent = 'Não deu para enviar' + detalhe(r) + '. Toque de novo 💜';
   }
   todos.forEach(x => { if(!x.classList.contains('usado')) x.disabled = false; });
 });
